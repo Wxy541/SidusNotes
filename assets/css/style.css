@@ -778,3 +778,58 @@ li a[href^="http://"]:after, li a[href^="https://"]:after {
   background-size: 1em 1em;
   opacity: 0.7;
 }
+
+/* ===== 新增：支持 Obsidian Callout 语法 ===== */
+/* 针对 Jekyll Garden 主题，增强 blockquote 显示为 callout 风格 */
+
+/* 基础背景微调，保留原有圆角和内边距，但边框颜色将根据类型变化 */
+.post-content blockquote,
+.note-content blockquote {
+    position: relative;
+    margin: 1.5rem 0;
+    padding: 1rem 1.2rem;
+    background-color: var(--bg2);
+    border-left-width: 5px;
+    border-left-style: solid;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+/* 针对不同 callout 类型设置左边框颜色和背景微调 */
+/* 使用 :has() 选择器检测第一个段落是否包含特定标记（现代浏览器支持良好） */
+.post-content blockquote:has(p:first-child i:contains("[!note]")),
+.note-content blockquote:has(p:first-child i:contains("[!note]")) {
+    border-left-color: #448aff;
+    background-color: #e8f0fe;
+}
+.post-content blockquote:has(p:first-child i:contains("[!tip]")),
+.note-content blockquote:has(p:first-child i:contains("[!tip]")) {
+    border-left-color: #00bcd4;
+    background-color: #e0f7fa;
+}
+.post-content blockquote:has(p:first-child i:contains("[!warning]")),
+.note-content blockquote:has(p:first-child i:contains("[!warning]")) {
+    border-left-color: #ffab40;
+    background-color: #fff3e0;
+}
+.post-content blockquote:has(p:first-child i:contains("[!danger]")),
+.note-content blockquote:has(p:first-child i:contains("[!danger]")) {
+    border-left-color: #ff4d4d;
+    background-color: #ffe6e6;
+}
+
+/* 可选：让第一个段落的文本加粗，并隐藏原始的 [!xxx] 标记 */
+.post-content blockquote p:first-child,
+.note-content blockquote p:first-child {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+/* 如果你希望隐藏 `[!note]` 这几个字符，可以用以下技巧（可选） */
+.post-content blockquote p:first-child i,
+.note-content blockquote p:first-child i {
+    display: inline-block;
+    width: 0;
+    overflow: visible;
+    position: relative;
+}
+/* 简单方案：暂时不强制隐藏，毕竟不影响阅读 */
