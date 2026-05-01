@@ -1,0 +1,29 @@
+/* callout 通用样式 */
+blockquote {
+    margin: 1rem 0;
+    padding: 0.5rem 1rem;
+    border-left: 0.25rem solid;
+    border-radius: 0.25rem;
+    background-color: #f8f9fa;
+}
+blockquote p:first-child { 
+    font-weight: bold; 
+}
+
+/* 特定类型的样式 */
+blockquote:has(p:first-child strong:contains('[!note]')) {
+    border-left-color: #448aff;
+    background-color: #e8f0fe;
+}
+blockquote:has(p:first-child strong:contains('[!tip]')) {
+    border-left-color: #00bcd4;
+    background-color: #e0f7fa;
+}
+blockquote:has(p:first-child strong:contains('[!warning]')) {
+    border-left-color: #ffab40;
+    background-color: #fff3e0;
+}
+blockquote:has(p:first-child strong:contains('[!danger]')) {
+    border-left-color: #ff4d4d;
+    background-color: #ffe6e6;
+}
