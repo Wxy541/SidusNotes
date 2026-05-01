@@ -1,19 +1,28 @@
-// 生成浮动目录并实现滚动高亮
+// 生成浮动目录并实现滚动高亮（兼容双链清洗后的文本）
 (function() {
-  // 避免在主页、笔记列表页等非文章页运行
   if (!document.querySelector('.container')) return;
 
-  // 找到文章主体区域（排除导航、页脚、backlinks 等）
-  // 策略：获取所有 h2, h3, h4，但排除位于 nav, footer, .backlinks, .callout 内的标题
+  // 清洗标题文本：去除 [[xxx|yyy]] 中的别名部分，去除 [[xxx]] 的括号
+  function cleanHeadingText(text) {
+    // 处理 [[link|alias]] -> alias，或者 [[link]] -> link
+    let cleaned = text.replace(/\[\[([^\]|]+)(\|([^\]]+))?\]\]/g, (match, link, _, alias) => {
+      return alias ? alias : link;
+    });
+    // 如果还存在多余的 | 分隔符（比如手动写的但没被处理），保留第一部分
+    if (cleaned.includes('|')) {
+      cleaned = cleaned.split('|')[0];
+    }
+    return cleaned.trim();
+  }
+
   const container = document.querySelector('.container');
   if (!container) return;
 
-  // 获取所有标题（h2, h3, h4）
+  // 获取所有标题（h2, h3, h4），排除导航、页脚、callout 等区域内的
   const headings = Array.from(container.querySelectorAll('h2, h3, h4')).filter(heading => {
-    // 排除位于导航、页脚、反向链接、callout 内的标题
     let parent = heading.parentElement;
     while (parent && parent !== container) {
-      if (parent.tagName === 'NAV' || parent.classList.contains('backlinks') || 
+      if (parent.tagName === 'NAV' || parent.classList.contains('backlinks') ||
           parent.classList.contains('callout') || parent.id === 'toc' ||
           parent.classList.contains('footer') || parent.classList.contains('nav')) {
         return false;
@@ -25,22 +34,22 @@
 
   if (headings.length === 0) return;
 
-  // 构建目录 HTML（嵌套结构）
-  const tocDiv = document.createElement('nav');
-  tocDiv.id = 'toc';
-  tocDiv.className = 'floating-toc';
-  tocDiv.setAttribute('aria-label', 'Table of Contents');
+  // 为没有 id 的标题自动生成 id
+  headings.forEach(heading => {
+    if (!heading.id) {
+      let baseId = heading.textContent.trim().toLowerCase().replace(/[^\w\u4e00-\u9fa5]+/g, '-');
+      heading.id = baseId + '-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+    }
+  });
 
-  // 生成树状结构
+  // 构建嵌套目录结构
   function buildToc(items) {
     const stack = [];
     const root = { children: [] };
     let current = root;
-    
     items.forEach(item => {
-      const level = parseInt(item.tagName[1]); // 2,3,4
+      const level = parseInt(item.tagName[1]);
       const li = { level, element: item, children: [] };
-      
       while (current.level && current.level >= level) {
         current = stack.pop();
       }
@@ -57,15 +66,11 @@
       const li = document.createElement('li');
       const a = document.createElement('a');
       a.href = `#${item.element.id}`;
-      a.textContent = item.element.textContent;
-      // 如果标题没有 id，自动添加一个
-      if (!item.element.id) {
-        item.element.id = `heading-${Date.now()}-${Math.random()}`;
-      }
+      // 提取清洗后的文本
+      a.textContent = cleanHeadingText(item.element.textContent);
       a.addEventListener('click', (e) => {
         e.preventDefault();
         item.element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        // 更新 URL hash（可选）
         history.pushState(null, null, `#${item.element.id}`);
       });
       li.appendChild(a);
@@ -78,6 +83,11 @@
     });
   }
 
+  const tocDiv = document.createElement('nav');
+  tocDiv.id = 'toc';
+  tocDiv.className = 'floating-toc';
+  tocDiv.setAttribute('aria-label', 'Table of Contents');
+
   const tocTree = buildToc(headings);
   const tocUl = document.createElement('ul');
   renderList(tocTree, tocUl);
@@ -86,7 +96,7 @@
 
   // 滚动高亮当前可见标题
   function updateActiveLink() {
-    const scrollPos = window.scrollY + 100; // 偏移量
+    const scrollPos = window.scrollY + 100;
     let activeHeading = null;
     for (let i = headings.length - 1; i >= 0; i--) {
       const heading = headings[i];
@@ -95,8 +105,8 @@
         break;
       }
     }
-    // 移除所有 active
-    tocDiv.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+    const allLinks = tocDiv.querySelectorAll('a');
+    allLinks.forEach(link => link.classList.remove('active'));
     if (activeHeading) {
       const activeLink = tocDiv.querySelector(`a[href="#${activeHeading.id}"]`);
       if (activeLink) activeLink.classList.add('active');
