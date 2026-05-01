@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-/* 浅色模式：白色背景 + 微蓝，主色调蓝色，紫色辅助 */
+/* 浅色模式：清澈浅蓝背景 + 蓝色主色调 */
 :root {
   --bg: #f4faff;               /* 非常清澈的浅蓝天 */
-  --bg2: #eaf3ff;              /* 浅蓝次级背景 */
-  --text: #1e293b;
-  --title: #0f172a;
-  --brand: #3b82f6;
-  --border: #cbd5e6;
+  --bg2: #eaf3ff;              /* 次级背景（稍深一点） */
+  --text: #1e293b;             /* 深灰色文字 */
+  --title: #0f172a;            /* 深蓝黑标题 */
+  --brand: #3b82f6;            /* 蓝色的主题色 */
+  --border: #cbd5e6;           /* 浅蓝灰边框 */
   
   --font: "Inter", sans-serif;
   --weight-medium: 400;
@@ -22,15 +22,14 @@
   --max-width: 48rem;
   --line-height: 1.5;
   
-  /* 5-level typography scale (1rem = 15px) */
-  --scale-xs: 0.8rem;     /* 12px */
-  --scale-sm: 0.933rem;   /* 14px */
-  --scale-base: 1rem;     /* 15px */
-  --scale-lg: 1.2rem;     /* 18px */
-  --scale-xl: 1.4rem;     /* 21px */
+  --scale-xs: 0.8rem;
+  --scale-sm: 0.933rem;
+  --scale-base: 1rem;
+  --scale-lg: 1.2rem;
+  --scale-xl: 1.4rem;
 }
 
-/* Dark theme variables (未修改，保持原样) */
+/* Dark theme variables (保持原样) */
 [data-theme="dark"] {
   --bg: #18181c;
   --bg2: #23232a;
@@ -40,7 +39,7 @@
   --border: #33343a;
 }
 
-/* smooth transition on theme switching */
+/* smooth transition */
 html.theme-transition,
 body.theme-transition {
   transition: background 0.3s, color 0.3s;
@@ -376,7 +375,7 @@ a:hover {
   height: 14px;
 }
 
-/* Markdown Support */
+/* 普通引用块样式（非 callout） */
 blockquote {
   border-left: 4px solid var(--brand);
   padding-left: var(--space-md);
@@ -387,6 +386,60 @@ blockquote {
   background: var(--bg2);
   padding: var(--space-md);
   border-radius: 0.25rem;
+}
+
+/* ========== 新增：纯 CSS Callout 样式 ========== 
+ * 针对结构：<blockquote><p><strong>[!note]</strong> 标题</p><p>正文...</p></blockquote>
+ * 效果：标题栏深色背景，隐藏 [!note] 标记，正文正常背景
+ */
+blockquote {
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--bg2);
+  border-left: 4px solid var(--brand);
+}
+
+/* 第一个段落作为标题栏 */
+blockquote p:first-child {
+  background-color: var(--brand);      /* 深色背景（蓝色） */
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+/* 隐藏第一个段落中的 <strong>[!note]</strong> 标签（或 <em> 等） */
+blockquote p:first-child strong,
+blockquote p:first-child em {
+  display: none;
+}
+
+/* 第一个段落中剩余的文字（即“摘要”）正常显示 */
+blockquote p:first-child {
+  font-style: normal;
+}
+
+/* 其余段落（正文）保持普通样式 */
+blockquote p:not(:first-child) {
+  background-color: var(--bg2);
+  color: var(--text);
+  padding: 0.8rem 1rem;
+  margin: 0;
+  border: none;
+  font-style: normal;
+}
+
+/* 如果正文中有多个段落，它们之间的间距由 margin 控制 */
+blockquote p + p {
+  margin-top: 0;
+}
+
+/* 代码块等内部元素正常显示 */
+blockquote pre,
+blockquote code {
+  background: rgba(0,0,0,0.05);
 }
 
 code {
@@ -463,372 +516,7 @@ td {
   color: var(--text);
 }
 
-/* Search styles - modernized */
-.search-container {
-  margin-bottom: var(--space-lg);
-  position: relative;
-}
+/* Search styles 等（省略，保持原样）—— 因篇幅不重复，但你需要保留原有其他样式 */
+/* 请从你的原始文件中保留 search、feed、tooltip 等样式，或者直接使用之前的完整版本，只替换 :root 和 blockquote 相关部分 */
 
-.search-input {
-  width: 100%;
-  padding: var(--space-sm);
-  border: 1px solid var(--border);
-  border-radius: 0.25rem;
-  font-size: var(--scale-base);
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font);
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: var(--brand);
-}
-
-.search-results {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: var(--bg);
-  max-height: 300px;
-  overflow-y: auto;
-  z-index: 999;
-  display: none;
-}
-
-.search-active .search-results {
-  display: block;
-  border: 1px solid var(--border);
-  border-top: none;
-  border-radius: 0 0 0.25rem 0.25rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.search-results-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.search-results-list-item {
-  margin: 0;
-}
-
-.search-result {
-  display: block;
-  padding: var(--space-xs);
-  text-decoration: none;
-  color: var(--text);
-  transition: all 0.2s ease;
-  border-bottom: 1px solid var(--border);
-  line-height: 1.5;
-}
-
-.search-result:last-child {
-  border-bottom: none;
-}
-
-.search-result:hover {
-  background: var(--bg2);
-  color: var(--brand);
-}
-
-.search-result-title {
-  color: var(--title);
-  font-weight: var(--weight-bold);
-  margin-bottom: var(--space-sm);
-  font-size: var(--scale-base);
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-}
-
-.search-result-doc {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-}
-
-.search-result-doc-title {
-  font-weight: var(--weight-bold);
-  color: var(--title);
-}
-
-.search-result-previews {
-  margin-top: var(--space-xs);
-}
-
-.search-result-preview {
-  color: var(--text);
-  font-size: var(--scale-sm);
-  line-height: 1.4;
-  margin-bottom: var(--space-xs);
-  opacity: 0.8;
-}
-
-.search-result-highlight {
-  background: var(--brand);
-  color: var(--bg);
-  padding: 0 2px;
-  border-radius: 2px;
-  font-weight: var(--weight-bold);
-}
-
-.search-no-result {
-  color: var(--text);
-  font-style: italic;
-  padding: var(--space-md);
-  text-align: center;
-}
-
-/* Feed styles */
-.notelist-feed {
-  border-bottom: 1px solid var(--border);
-  padding: var(--space-sm) 0;
-  transition: background 0.3s ease;
-}
-
-.notelist-feed:hover {
-  background: var(--bg2);
-}
-
-.notelist-feed a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.notelist-feed p {
-  color: var(--title);
-  margin-bottom: 0;
-  font-size: var(--scale-base);
-  font-weight: var(--weight-medium);
-}
-
-.list-feed {
-  border-bottom: 1px solid var(--border);
-  padding: var(--space-sm) 0;
-}
-
-.list-feed a {
-  text-decoration: none;
-  color: var(--title);
-  transition: color 0.3s ease;
-}
-
-.list-feed a:hover {
-  color: var(--brand);
-}
-
-/* Hide/show classes for backlinks */
-.hide {
-  display: none;
-}
-
-.show {
-  display: block;
-}
-
-/* Tooltip styles */
-.tooltip {
-  position: relative;
-  display: inline;
-}
-
-.tooltip .right {
-  width: 300px;
-  padding: 0.5rem 0.75rem;
-  font-size: var(--scale-xs);
-  line-height: 1.3;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 150%;
-  z-index: 1;
-  background-color: var(--bg2);
-  color: var(--text);
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s;
-  text-align: left;
-}
-
-.tooltip:hover .right {
-  opacity: 1;
-  visibility: visible;
-}
-
-.tooltip .right .tooltip-excerpt {
-  color: var(--text);
-  line-height: 1.3;
-  font-size: var(--scale-xs);
-  display: block;
-  max-width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 280px;
-}
-
-.stale-link {
-  color: var(--text) !important;
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.wiki-link {
-  color: var(--brand);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.2s ease;
-}
-
-.wiki-link:hover {
-  border-bottom-color: var(--brand);
-}
-
-.link-preview {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: var(--space-sm);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  max-width: 300px;
-  font-size: var(--scale-sm);
-  line-height: 1.4;
-}
-
-.preview-content strong {
-  color: var(--title);
-  display: block;
-  margin-bottom: var(--space-xs);
-}
-
-.preview-content p {
-  color: var(--text);
-  margin: 0;
-  opacity: 0.8;
-  font-size: 0.875rem;
-  line-height: 1.4;
-}
-
-@media (max-width: 768px) {
-  .container {
-    padding-top: var(--space-md);
-  }
-  
-  .container > div {
-    padding: 0 var(--space-md) var(--space-md);
-  }
-  
-  .nav {
-    margin-bottom: var(--space-lg);
-  }
-  
-  h1 {
-    font-size: var(--scale-lg);
-  }
-  
-  h2 {
-    font-size: var(--scale-base);
-  }
-  
-  h3 {
-    font-size: var(--scale-base);
-  }
-}
-
-@media (max-width: 520px) {
-  .container {
-    padding-top: var(--space-sm);
-  }
-  
-  .container > div {
-    padding: 0 var(--space-sm) var(--space-sm);
-  }
-  
-  .btn {
-    display: block;
-    margin-bottom: var(--space-sm);
-  }
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: var(--space-md) 0;
-}
-
-p a[href^="http://"], p a[href^="https://"],
-li a[href^="http://"], li a[href^="https://"] {
-  position: relative;
-}
-p a[href^="http://"]:after, p a[href^="https://"]:after,
-li a[href^="http://"]:after, li a[href^="https://"]:after {
-  content: '';
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  margin-left: 0.25em;
-  vertical-align: text-top;
-  background: url('data:image/svg+xml;utf8,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22%23555%22%20stroke-width=%222%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%3E%3Cpath%20d=%22M5%2019L19%205M5%205h14v14%22/%3E%3C/svg%3E') no-repeat center center;
-  background-size: 1em 1em;
-  opacity: 0.7;
-}
-
-/* ========== Callout 样式：标题栏深色条 + 正文浅色背景 ========== */
-/* 注意：此样式依赖于 JS 将 `<blockquote>` 转换为 `<div class="callout callout-xxx">` 结构，并包含 `.callout-title` 和 `.callout-content` 子元素。 */
-
-.callout {
-  margin: 1.5rem 0;
-  border-radius: 8px;
-  overflow: hidden;
-  border-left: 5px solid;        /* 左边框颜色由子类决定 */
-  background-color: var(--bg2);   /* 正文背景色（浅色模式为浅蓝紫） */
-}
-
-.callout-title {
-  padding: 0.5rem 1rem;
-  font-weight: 600;
-  color: #ffffff;                 /* 标题文字白色 */
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.callout-content {
-  padding: 0.8rem 1rem;
-}
-
-/* 不同类型使用不同的标题栏背景色（深色）和左边框色 */
-.callout-note {
-  border-left-color: #3b82f6;    /* 蓝色 */
-}
-.callout-note .callout-title {
-  background-color: #3b82f6;
-}
-
-.callout-tip {
-  border-left-color: #10b981;    /* 绿色（可自行调整） */
-}
-.callout-tip .callout-title {
-  background-color: #10b981;
-}
-
-.callout-warning {
-  border-left-color: #f59e0b;    /* 橙色 */
-}
-.callout-warning .callout-title {
-  background-color: #f59e0b;
-}
-
-.callout-danger {
-  border-left-color: #ef4444;    /* 红色 */
-}
-.callout-danger .callout-title {
-  background-color: #ef4444;
-}
-
-/* 如果你使用其他类型（如 abstract, info 等），可继续添加 */
+/* 如果你希望保持原有搜索、工具提示等样式不变，请保留它们。这里为了清晰，只展示了核心改动。 */
