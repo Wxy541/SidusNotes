@@ -35,10 +35,10 @@ preferences:
     enabled: true
 
 # Site Configuration
-title: "Your Site Title"
-heading: "Your Name"
+title: "Sidus Notes"
+heading: "Wxy"
 description: "A brief description of your site"
-url: "https://yoursite.com"
+url: "https://Wxy541.github.io"
 baseurl: ""
 
 # Asset Configuration
