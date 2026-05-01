@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-/* 浅色模式：蓝紫配色 */
+/* 浅色模式：白色背景 + 微蓝，主色调蓝色，紫色辅助 */
 :root {
-  --bg: #f5f3ff;                /* 背景：极淡紫罗兰 */
-  --bg2: #ede9fe;               /* 次级背景：浅紫罗兰 */
-  --text: #2e2c3a;              /* 正文：深灰紫 */
-  --title: #1e1b2e;             /* 标题：深紫黑 */
-  --brand: #6366f1;             /* 主题色：Indigo 蓝紫 */
-  --border: #c4b5fd;            /* 边框：淡紫 */
+  --bg: #f8faff;               /* 背景：白底微蓝 */
+  --bg2: #eef2ff;              /* 次级背景：浅蓝紫 */
+  --text: #1e293b;             /* 正文：深灰蓝 */
+  --title: #0f172a;            /* 标题：深蓝黑 */
+  --brand: #3b82f6;            /* 主题色：蓝色 */
+  --border: #cbd5e1;           /* 边框：浅灰蓝 */
   
   --font: "Inter", sans-serif;
   --weight-medium: 400;
@@ -30,7 +30,7 @@
   --scale-xl: 1.4rem;     /* 21px */
 }
 
-/* Dark theme variables (保持原样，未修改) */
+/* Dark theme variables (未修改，保持原样) */
 [data-theme="dark"] {
   --bg: #18181c;
   --bg2: #23232a;
@@ -780,19 +780,21 @@ li a[href^="http://"]:after, li a[href^="https://"]:after {
   opacity: 0.7;
 }
 
-/* ========== 新版 Callout 样式：标题栏深色条 + 正文浅色背景 ========== */
+/* ========== Callout 样式：标题栏深色条 + 正文浅色背景 ========== */
+/* 注意：此样式依赖于 JS 将 `<blockquote>` 转换为 `<div class="callout callout-xxx">` 结构，并包含 `.callout-title` 和 `.callout-content` 子元素。 */
+
 .callout {
   margin: 1.5rem 0;
   border-radius: 8px;
-  overflow: hidden;          /* 保证圆角裁剪子元素 */
-  border-left: 5px solid;    /* 左边框颜色由子类决定 */
-  background-color: var(--bg2);  /* 正文背景色 */
+  overflow: hidden;
+  border-left: 5px solid;        /* 左边框颜色由子类决定 */
+  background-color: var(--bg2);   /* 正文背景色（浅色模式为浅蓝紫） */
 }
 
 .callout-title {
   padding: 0.5rem 1rem;
   font-weight: 600;
-  color: #ffffff;            /* 标题文字白色 */
+  color: #ffffff;                 /* 标题文字白色 */
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
@@ -800,31 +802,33 @@ li a[href^="http://"]:after, li a[href^="https://"]:after {
   padding: 0.8rem 1rem;
 }
 
-/* 不同类型的标题栏使用与左边框相同的颜色（深色） */
+/* 不同类型使用不同的标题栏背景色（深色）和左边框色 */
 .callout-note {
-  border-left-color: #448aff;
+  border-left-color: #3b82f6;    /* 蓝色 */
 }
 .callout-note .callout-title {
-  background-color: #448aff;
+  background-color: #3b82f6;
 }
 
 .callout-tip {
-  border-left-color: #00bcd4;
+  border-left-color: #10b981;    /* 绿色（可自行调整） */
 }
 .callout-tip .callout-title {
-  background-color: #00bcd4;
+  background-color: #10b981;
 }
 
 .callout-warning {
-  border-left-color: #ffab40;
+  border-left-color: #f59e0b;    /* 橙色 */
 }
 .callout-warning .callout-title {
-  background-color: #ffab40;
+  background-color: #f59e0b;
 }
 
 .callout-danger {
-  border-left-color: #ff4d4d;
+  border-left-color: #ef4444;    /* 红色 */
 }
 .callout-danger .callout-title {
-  background-color: #ff4d4d;
+  background-color: #ef4444;
 }
+
+/* 如果你使用其他类型（如 abstract, info 等），可继续添加 */
