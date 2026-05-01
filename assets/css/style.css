@@ -2,12 +2,12 @@
 
 /* 浅色模式：白色背景 + 微蓝，主色调蓝色，紫色辅助 */
 :root {
-  --bg: #f8faff;               /* 背景：白底微蓝 */
-  --bg2: #eef2ff;              /* 次级背景：浅蓝紫 */
-  --text: #1e293b;             /* 正文：深灰蓝 */
-  --title: #0f172a;            /* 标题：深蓝黑 */
-  --brand: #3b82f6;            /* 主题色：蓝色 */
-  --border: #cbd5e1;           /* 边框：浅灰蓝 */
+  --bg: #f4faff;               /* 非常清澈的浅蓝天 */
+  --bg2: #eaf3ff;              /* 浅蓝次级背景 */
+  --text: #1e293b;
+  --title: #0f172a;
+  --brand: #3b82f6;
+  --border: #cbd5e6;
   
   --font: "Inter", sans-serif;
   --weight-medium: 400;
