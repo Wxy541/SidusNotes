@@ -1,12 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
+/* 浅色模式：蓝紫配色 */
 :root {
-  --bg: rgb(255, 252, 240);
-  --bg2: rgb(242, 240, 229);
-  --text: #6f6e69;
-  --title: #343331;
-  --brand: rgb(58, 169, 159);
-  --border: rgb(230, 228, 217);
+  --bg: #f5f3ff;                /* 背景：极淡紫罗兰 */
+  --bg2: #ede9fe;               /* 次级背景：浅紫罗兰 */
+  --text: #2e2c3a;              /* 正文：深灰紫 */
+  --title: #1e1b2e;             /* 标题：深紫黑 */
+  --brand: #6366f1;             /* 主题色：Indigo 蓝紫 */
+  --border: #c4b5fd;            /* 边框：淡紫 */
   
   --font: "Inter", sans-serif;
   --weight-medium: 400;
@@ -29,7 +30,7 @@
   --scale-xl: 1.4rem;     /* 21px */
 }
 
-/* Dark theme variables */
+/* Dark theme variables (保持原样，未修改) */
 [data-theme="dark"] {
   --bg: #18181c;
   --bg2: #23232a;
@@ -779,28 +780,51 @@ li a[href^="http://"]:after, li a[href^="https://"]:after {
   opacity: 0.7;
 }
 
-/* Callout 样式 */
-blockquote.callout {
-  border-left-width: 5px;
-  border-left-style: solid;
-  background-color: var(--bg2);
-  padding: 1rem 1.2rem;
-  border-radius: 8px;
+/* ========== 新版 Callout 样式：标题栏深色条 + 正文浅色背景 ========== */
+.callout {
   margin: 1.5rem 0;
+  border-radius: 8px;
+  overflow: hidden;          /* 保证圆角裁剪子元素 */
+  border-left: 5px solid;    /* 左边框颜色由子类决定 */
+  background-color: var(--bg2);  /* 正文背景色 */
 }
+
+.callout-title {
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  color: #ffffff;            /* 标题文字白色 */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.callout-content {
+  padding: 0.8rem 1rem;
+}
+
+/* 不同类型的标题栏使用与左边框相同的颜色（深色） */
 .callout-note {
   border-left-color: #448aff;
-  background-color: #e8f0fe;
 }
+.callout-note .callout-title {
+  background-color: #448aff;
+}
+
 .callout-tip {
   border-left-color: #00bcd4;
-  background-color: #e0f7fa;
 }
+.callout-tip .callout-title {
+  background-color: #00bcd4;
+}
+
 .callout-warning {
   border-left-color: #ffab40;
-  background-color: #fff3e0;
 }
+.callout-warning .callout-title {
+  background-color: #ffab40;
+}
+
 .callout-danger {
   border-left-color: #ff4d4d;
-  background-color: #ffe6e6;
+}
+.callout-danger .callout-title {
+  background-color: #ff4d4d;
 }
