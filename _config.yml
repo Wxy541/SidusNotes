@@ -109,3 +109,5 @@ exclude:
   - vendor/cache/
   - vendor/gems/
   - vendor/ruby/
+
+favicon: "/favicon.ico"
