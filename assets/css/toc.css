@@ -1,11 +1,10 @@
-/* 浮动目录容器：固定在左侧，半透明圆角 */
+/* 浮动目录：左侧靠上，半透明圆角，层级缩进 */
 .floating-toc {
   position: fixed;
   left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 100px;                /* 靠上，可根据需要调整 */
   width: 260px;
-  max-height: 80vh;
+  max-height: calc(100vh - 140px);  /* 避免超出视口 */
   overflow-y: auto;
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(8px);
@@ -32,10 +31,12 @@
   margin: 0;
   padding-left: 0;
 }
+
 .floating-toc li {
   margin: 6px 0;
   line-height: 1.4;
 }
+
 .floating-toc a {
   display: block;
   padding: 4px 12px;
@@ -45,40 +46,55 @@
   transition: all 0.2s;
   font-weight: 400;
 }
+
 .floating-toc a:hover {
   background: rgba(0, 0, 0, 0.05);
 }
+
 [data-theme="dark"] .floating-toc a:hover {
   background: rgba(255, 255, 255, 0.1);
 }
+
 /* 当前高亮项 */
 .floating-toc a.active {
   background: var(--brand, #3b82f6);
   color: white;
   font-weight: 500;
 }
-/* 缩进层级 */
-.floating-toc .level-2 {
-  padding-left: 0;
+
+/* 层级缩进：基于实际嵌套深度，假设根 ul 下 li 内的 ul 对应 h3，再下一级 ul 对应 h4 */
+.floating-toc ul ul {
+  padding-left: 20px;   /* h3 缩进 */
 }
-.floating-toc .level-3 {
-  padding-left: 20px;
+
+.floating-toc ul ul ul {
+  padding-left: 20px;   /* h4 再缩进 20px，总计 40px */
 }
-.floating-toc .level-4 {
-  padding-left: 36px;
-}
-/* 隐藏滚动条（可选） */
+
+/* 可选：直接根据类名控制（如果 JS 生成了类名） */
+/* .floating-toc .level-2 { } */
+/* .floating-toc .level-3 { padding-left: 20px; } */
+/* .floating-toc .level-4 { padding-left: 40px; } */
+
+/* 滚动条美化 */
 .floating-toc::-webkit-scrollbar {
   width: 4px;
 }
+
 .floating-toc::-webkit-scrollbar-track {
   background: transparent;
 }
+
 .floating-toc::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.2);
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 4px;
 }
-/* 小屏幕时隐藏 */
+
+[data-theme="dark"] .floating-toc::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* 小屏幕时隐藏目录，避免遮挡 */
 @media (max-width: 1024px) {
   .floating-toc {
     display: none;
