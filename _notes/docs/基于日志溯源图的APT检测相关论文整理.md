@@ -22,6 +22,14 @@ feed: show
 
 ## 一、APT攻击检测
 
+### 2026 **[[ProvAgent|ProvAgent]]**
+论文全名：ProvAgent: Threat Detection Based on Identity-Behavior Binding and Multi-Agent Collaborative Attack Investigation
+发表于：Usenix Security
+发表者：信工所 G4
+技术标签： #LLM在溯源图上的应用 #异常检测 （细粒度） #攻击调查 
+
+> [!note] 摘要
+> 我认为最为核心的创新，就是 Leader 这个角色的使用，将被动调查转为主动调查，让 LLM 主动发现攻击链是否缺失，从而进行补全，并可以据此筛掉假阳性。除此之外，四个角色既有检测功能(recheck)，也有调查功能（输出可读报告）。—— 感觉这个 Leader 的思路可以有比较多改进的方式，比如定义一种查询语言，以后让 LLM 自动从源数据查询即可，不必再经过多余的步骤；查询的思路也可以不必仅仅局限于 killchain ，可以有更多扩展。不过，还是没法完全转为主动调查，需要被动等待告警的问题仍然存在（否则数据量太大了，没法处理）
 ### 2026 **[[AutoProv|AutoProv]]**
 
 论文全名：An End-to-End Framework for Functionality-Embedded Provenance Graph Construction and Threat Interpretation
