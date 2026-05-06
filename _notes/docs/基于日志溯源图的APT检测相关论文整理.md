@@ -30,6 +30,7 @@ feed: show
 
 > [!note] 摘要
 > 我认为最为核心的创新，就是 Leader 这个角色的使用，将被动调查转为主动调查，让 LLM 主动发现攻击链是否缺失，从而进行补全，并可以据此筛掉假阳性。除此之外，四个角色既有检测功能(recheck)，也有调查功能（输出可读报告）。—— 感觉这个 Leader 的思路可以有比较多改进的方式，比如定义一种查询语言，以后让 LLM 自动从源数据查询即可，不必再经过多余的步骤；查询的思路也可以不必仅仅局限于 killchain ，可以有更多扩展。不过，还是没法完全转为主动调查，需要被动等待告警的问题仍然存在（否则数据量太大了，没法处理）
+
 ### 2026 **[[AutoProv|AutoProv]]**
 
 论文全名：An End-to-End Framework for Functionality-Embedded Provenance Graph Construction and Threat Interpretation
@@ -43,6 +44,7 @@ feed: show
 > [!note] 摘要
 > 比较新颖的，是对于日志解析的关注；传统的日志解析基于正则表达式，不同格式的日志需要不同的解析规则，如果想要同时处理多类日志，则会比较麻烦。本研究编码日志条目，用【贪婪最远点（GFP）采样算法】找到代表性日志，对于无法解析的日志，用 LLM 生成解析规则。
 
+
 ### 2025 **[[OCR-APT|OCR-APT]]**
 论文全名：OCR-APT: Reconstructing APT Stories from Audit Logs using Subgraph Anomaly Detection and LLMs
 
@@ -54,6 +56,18 @@ feed: show
 
 > [!note] 摘要
 > 比较有特色的是调用 LLM 生成子图的调查报告，但使用得比较简单；检测还是利用 GNN 的思路，只不过初始特征有点意思，不是基于语义信息，而是完全基于结构信息，即节点邻居事件的类型分布与时间特征（空闲期统计）
+
+### 2025 **[[OMNISEC|OMNISEC]]**
+论文全名：论文地址
+发表于：期刊/会议
+发表者：组织 or 团队
+技术标签： #LLM在溯源图上的应用 #异常检测 #有标签RAG  
+
+
+> [!note] 摘要
+> 本论文比较特色的点在于引入的丰富的外部知识，我认为在实践中这是可行的，但是作为论文而言，没法证明可以识别 0-day APT......至于 LLM 的使用方法，都是大同小异，通过RAG技术检索对应的知识
+
+
 
 ### 2025 **[[Brewing Vodka|Brewing Vodka]]**
 
