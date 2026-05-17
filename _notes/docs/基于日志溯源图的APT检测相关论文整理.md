@@ -21,6 +21,21 @@ feed: show
 # 论文列表
 
 ## 一、APT攻击检测
+## 2026 [[GRASP|GRASP]]
+
+论文全名：GRASP - Graph-Based Anomaly Detection Through Self-Supervised Classification
+发表于：还在预印本网站上
+发表者：
+技术标签： #异常检测 （细粒度） #检测鲁棒性研究
+
+> [!note] 摘要
+> 提到了一种有趣的思路，就是“阈值无关”的判别方法；阈值敏感是很多 PIDS 的问题，很少论文讨论到这个点，也就是区分“良性”和“异常”，常常依赖于一个固定阈值，或者自己微调设定的，又或者是验证集确定的。验证集确定的话，这个阈值又和验证集的选取有关了
+> 
+> 这篇论文的思路是：训练任务和推理任务改为预测可执行文件（就是 execute 进程的那个文件，例如 /tmp/vUgefal），然后这些可执行文件是训练过程之中就列好的一个列表，后续要做的就是选择，而不是连续阈值。即输出 softmax ，相当于这个列表上的概率分布，概率值最大的，就是预测结果。此时只有预测对和预测不对两种可能，不存在阈值问题。
+> 
+> 但是这个方法存在问题的，存在一个隐藏的阈值，即“最大”；如果我认为 topk 命中一个就算命中呢？不也可以吗？（虽然效果不一定好，但这证明是存在其它“阈值”选择的）。所以关于这个问题的关键，应该不是证明阈值无关，而是去证明同一个阈值在足够丰富的数据集上取得的效果都不错。（至于这篇论文有没有实验证明这个点，没有细看）
+
+
 
 ### 2026 **[[ProvAgent|ProvAgent]]**
 论文全名：ProvAgent: Threat Detection Based on Identity-Behavior Binding and Multi-Agent Collaborative Attack Investigation
